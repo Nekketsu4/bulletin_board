@@ -1,0 +1,32 @@
+{% extends "layout/basic.html" %}
+
+{% load thumbnail %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block title %} {{ rubric }}{% endblock %}
+
+{% block content %}
+{% if bboards %}
+<ul class="list-unstyled">
+    {% for bboard in bboards %}
+    <li class="media my-5 p-3 border">
+        {% url 'main:detail' rubric_pk=bboard.rubric.pk pk=bboard.pk as url %}
+        <a href="{{ url }}">
+        {% if bboard.image %}
+        <img class="mr-3" src="{% thumbnail bboard.image 'default' %}">
+        {% else %}
+        <img class="mr=3" src="{% static 'main/empty.jpg' %}">
+        {% endif %}
+        </a>
+        <div class="media-body">
+            <h3><a href="{{ url }}">{{ bboard.title }}</a></h3>
+            <div>{{ bboard.content }}</div>
+            <p class="text-right font-weight-bold">{{ bboard.price }} руб</p>
+            <p class="text-right font-italic">{{ bboard.created_at }}</p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
